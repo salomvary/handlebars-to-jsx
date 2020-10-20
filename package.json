@@ -4,6 +4,9 @@
   "author": "Danakt Frost <danakt@protonmail.com>",
   "license": "MIT",
   "description": "Converts Handlebars template to React component",
+  "bin": {
+    "handlebars-to-jsx": "./bin/handlebars-to-jsx"
+  },
   "main": "dist/index.js",
   "scripts": {
     "watch": "tsc --watch",
@@ -57,6 +60,7 @@
     "@babel/types": "^7.5.5",
     "@glimmer/syntax": "^0.38.4",
     "is-self-closing": "^1.0.1",
+    "minimist": "^1.2.5",
     "react-attr-converter": "^0.3.1",
     "reserved-words": "^0.1.2"
   },

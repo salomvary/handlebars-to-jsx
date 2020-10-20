@@ -74,6 +74,33 @@ compile('<div>{{variable}}</div>', { includeImport: true, isModule: true })
 // export default props => <div>{props.variable}</div>
 ```
 
+## Command line usage
+
+This package comes with a command line utility:
+
+```sh
+$ handlebars-to-jsx --help
+
+Usage: handlebars-to-jsx [path] [options]
+
+Path must be a Handlebars file otherwise it will be read from stdin.
+
+Options:
+  -c --component         Should return JSX code wrapped as a function component.
+  -m --module            Should return generated code exported as default.
+  -i --include-import    Should return generated code with React import at the top.
+  -h --help              Print this help text and exit.
+```
+
+Example usage:
+
+```sh
+$ npx handlebars-to-jsx test.hbs -c
+
+props => <React.Fragment>{props.qux}
+</React.Fragment>;
+```
+
 ## Code formatting
 
 The output code is created from an AST tree, so it's unformatted by default. You can use tools like [Prettier](https://prettier.io/docs/en/api.html) to format the code:

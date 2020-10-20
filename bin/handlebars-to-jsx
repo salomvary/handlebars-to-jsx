@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+
+const fs = require('fs')
+const { compile } = require('../dist')
+const argv = require('minimist')(process.argv.slice(2))
+
+if (argv.h || argv.help) {
+  help()
+  process.exit()
+}
+
+const path = argv._[0]
+const isComponent = argv.c || argv.component
+const includeImport = argv.i || argv['include-import']
+const isModule = argv.m || argv.module || includeImport
+
+function help() {
+  console.log([
+    'Usage: handlebars-to-jsx [path] [options]',
+    '',
+    'Path must be a Handlebars file otherwise it will be read from stdin.',
+    '',
+    'Options:',
+    '  -c --component         Should return JSX code wrapped as a function component.',
+    '  -m --module            Should return generated code exported as default.',
+    '  -i --include-import    Should return generated code with React import at the top.',
+    '  -h --help              Print this help text and exit.',
+  ].join('\n'))
+}
+
+function getInput() {
+  try {
+    return fs.readFileSync(path || process.stdin.fd, 'utf-8')
+  } catch (e) {
+    if (!path && e.code === 'EAGAIN') {
+      // Failed opening stdin
+      help()
+      process.exit(2)
+    } else {
+      // Failed opening file
+      console.error(e.message)
+      process.exit(3)
+    }
+  }
+}
+
+try {
+  console.log(
+    compile(getInput(), { isComponent, isModule, includeImport })
+  )
+} catch (e) {
+  console.error(e.message)
+  process.exit(1)
+}
